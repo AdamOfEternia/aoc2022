@@ -29,8 +29,8 @@ def main():
         elves.append(Elf(index=len(elves) + 1, calories=elf_calories))
 
     print(max(elves, key=lambda x: x.calories))
-    top3Elves = sorted(elves, key=lambda x: x.calories, reverse=True)[:3]
-    print("Total calories of top 3 Elves is " + str(sum(e.calories for e in top3Elves)))
+    top3_elves = sorted(elves, key=lambda x: x.calories, reverse=True)[:3]
+    print("Total calories of top 3 Elves is " + str(sum(e.calories for e in top3_elves)))
 
 
 if __name__ == "__main__":
