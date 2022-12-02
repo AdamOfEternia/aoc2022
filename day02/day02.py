@@ -14,7 +14,7 @@ class Move:
 
 def main():
     moves = [
-        Move(name="Rock", value=1, keys=['A', 'Y']),
+        Move(name="Rock", value=1, keys=['A', 'X']),
         Move(name="Paper", value=2, keys=['B', 'Y']),
         Move(name="Scissors", value=3, keys=['C', 'Z'])
     ]
