@@ -1,6 +1,3 @@
-from enum import Enum
-
-
 class Move:
 
     def __init__(self, name, value, keys):
