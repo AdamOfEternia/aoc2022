@@ -1,10 +1,13 @@
+import names
+
+
 class Elf:
-    def __init__(self, index, calories):
-        self.index = index
+    def __init__(self, name, calories):
+        self.name = name
         self.calories = calories
 
     def __str__(self):
-        return f"Elf {self.index} is carrying {self.calories} calories"
+        return f"Elf {self.name} is carrying {self.calories} calories"
 
     def __repr__(self):
         return str(self)
@@ -22,15 +25,16 @@ def main():
     for calories in data:
         if calories != "":
             elf_calories += int(calories)
-        if calories == "":
-            elves.append(Elf(index=len(elves) + 1, calories=elf_calories))
+        else:
+            elves.append(Elf(names.get_first_name(), calories=elf_calories))
             elf_calories = 0
     if elf_calories > 0:
-        elves.append(Elf(index=len(elves) + 1, calories=elf_calories))
+        elves.append(Elf(names.get_first_name(), calories=elf_calories))
 
     print(max(elves, key=lambda x: x.calories))
     top3_elves = sorted(elves, key=lambda x: x.calories, reverse=True)[:3]
-    print("Total calories of top 3 Elves is " + str(sum(e.calories for e in top3_elves)))
+    print(*top3_elves, sep=", ")
+    print(f"Total calories of top 3 Elves is {sum(e.calories for e in top3_elves)} calories")
 
 
 if __name__ == "__main__":
