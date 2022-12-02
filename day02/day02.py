@@ -12,6 +12,21 @@ class Move:
         return f"{self.name} ({self.value})"
 
 
+def get_score(me, cpu):
+    score = me.value
+
+    if me.value == cpu.value:
+        score += 3
+    elif me.value == 1 and cpu.value == 3:
+        score += 6
+    elif me.value == 2 and cpu.value == 1:
+        score += 6
+    elif me.value == 3 and cpu.value == 2:
+        score += 6
+
+    return score
+
+
 def main():
     moves = [
         Move(name="Rock", value=1, keys=['A', 'X']),
@@ -25,25 +40,20 @@ def main():
     my_score = 0
     for game in games:
         cpu = next((x for x in moves if game[0] in x.keys), None)
-        me = next((x for x in moves if game[2] in x.keys), None)
+        if game[2] == 'X':
+            me_idx = moves.index(cpu) - 1
+            if me_idx < 0:
+                me_idx = len(moves) - 1
+            me = moves[me_idx]
+        elif game[2] == 'Y':
+            me = next((x for x in moves if game[0] in x.keys), None)
+        elif game[2] == 'Z':
+            me_idx = moves.index(cpu) + 1
+            if me_idx == len(moves):
+                me_idx = 0
+            me = moves[me_idx]
 
-        print(f"{cpu} vs {me}... ", end='')
-
-        my_score += me.value
-        if me.value == cpu.value:
-            my_score += 3
-            print("Draw")
-        elif me.value == 1 and cpu.value == 3:
-            my_score += 6
-            print("Win")
-        elif me.value == 2 and cpu.value == 1:
-            my_score += 6
-            print("Win")
-        elif me.value == 3 and cpu.value == 2:
-            print("Win")
-            my_score += 6
-        else:
-            print("Lose")
+        my_score += get_score(me, cpu)
 
     print(f"My final score is {my_score}")
 
