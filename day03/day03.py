@@ -36,10 +36,13 @@ def main():
     for bag in bags:
         rucksacks.append(Rucksack(bag))
 
+    total_priority = 0
     for rucksack in rucksacks:
         duplicate_item = rucksack.get_duplicate_item_in_compartments()
-        item_priroty = get_priority_value(duplicate_item)
-        print(f"Duplicate packed item is {duplicate_item}, priority {item_priroty}")
+        item_priority = get_priority_value(duplicate_item)
+        total_priority += item_priority
+        print(f"Duplicate packed item is {duplicate_item}, priority {item_priority}")
+    print(f"Total priority value {total_priority}")
 
 
 if __name__ == "__main__":
