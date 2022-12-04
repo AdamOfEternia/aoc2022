@@ -30,17 +30,16 @@ class Team:
             return True
         return False
 
-    def how_many_elves_clash_partially(self):
-        partial_clashes = 0
-        if self.elf1.section_start in range(self.elf2.section_start, self.elf2.section_end):
-            partial_clashes += 1
-        elif self.elf1.section_end in range(self.elf2.section_start, self.elf2.section_end):
-            partial_clashes += 1
-        if self.elf2.section_start in range(self.elf1.section_start, self.elf1.section_end):
-            partial_clashes += 1
-        elif self.elf2.section_end in range(self.elf1.section_start, self.elf1.section_end):
-            partial_clashes += 1
-        return partial_clashes
+    def do_elves_clash_partially(self):
+        if self.elf2.section_start <= self.elf1.section_start <= self.elf2.section_end:
+            return True
+        elif self.elf2.section_start <= self.elf1.section_end <= self.elf2.section_end:
+            return True
+        if self.elf1.section_start <= self.elf2.section_start <= self.elf1.section_end:
+            return True
+        elif self.elf1.section_start <= self.elf2.section_end <= self.elf1.section_end:
+            return True
+        return False
 
 
 def read_file():
@@ -63,7 +62,8 @@ def main():
     for team in teams:
         if team.do_elves_clash_fully():
             full_clash_count += 1
-        partial_clash_count += team.how_many_elves_clash_partially()
+        if team.do_elves_clash_partially():
+            partial_clash_count += 1
     print(f"Number of clashing teams is {full_clash_count}")
     print(f"Number of partial clashing teams is {partial_clash_count}")
 
