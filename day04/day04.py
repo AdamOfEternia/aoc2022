@@ -30,6 +30,18 @@ class Team:
             return True
         return False
 
+    def how_many_elves_clash_partially(self):
+        partial_clashes = 0
+        if self.elf1.section_start in range(self.elf2.section_start, self.elf2.section_end):
+            partial_clashes += 1
+        elif self.elf1.section_end in range(self.elf2.section_start, self.elf2.section_end):
+            partial_clashes += 1
+        if self.elf2.section_start in range(self.elf1.section_start, self.elf1.section_end):
+            partial_clashes += 1
+        elif self.elf2.section_end in range(self.elf1.section_start, self.elf1.section_end):
+            partial_clashes += 1
+        return partial_clashes
+
 
 def read_file():
     with open("pairs.dat") as file:
@@ -46,11 +58,14 @@ def main():
         start2, end2 = second.split('-', 1)
         teams.append(Team(elf1=Elf(int(start1), int(end1)), elf2=Elf(int(start2), int(end2))))
 
-    clash_count = 0
+    full_clash_count = 0
+    partial_clash_count = 0
     for team in teams:
         if team.do_elves_clash_fully():
-            clash_count += 1
-    print(f"Number of clashing teams is {clash_count}")
+            full_clash_count += 1
+        partial_clash_count += team.how_many_elves_clash_partially()
+    print(f"Number of clashing teams is {full_clash_count}")
+    print(f"Number of partial clashing teams is {partial_clash_count}")
 
 
 if __name__ == "__main__":
