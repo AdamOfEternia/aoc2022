@@ -21,6 +21,15 @@ class Stack:
     def get_top_item(self):
         return self.items[-1]
 
+    def remove_items(self, count):
+        items = self.items[-count:]
+        for c in range(0, count):
+            self.items.pop()
+        return items
+
+    def add_items(self, items):
+        self.items.extend(items)
+
 
 @dataclass
 class Move:
@@ -32,6 +41,23 @@ class Move:
         self.num_moves = num_moves
         self.from_stack = from_stack
         self.to_stack = to_stack
+
+
+def remove_items_one_by_one(stacks, moves):
+    """Day05 - Part1"""
+    for move in moves:
+        for m in range(0, move.num_moves):
+            item = stacks[move.from_stack - 1].remove_item()
+            stacks[move.to_stack - 1].add_item(item)
+    return stacks
+
+
+def remove_items_by_chunks(stacks, moves):
+    """Day05 - Part2"""
+    for move in moves:
+        items = stacks[move.from_stack - 1].remove_items(move.num_moves)
+        stacks[move.to_stack - 1].add_items(items)
+    return stacks
 
 
 def main():
@@ -73,10 +99,7 @@ def main():
             moves.append(Move(int(parts[1]), int(parts[3]), int(parts[5])))
     print(moves)
 
-    for move in moves:
-        for m in range(0, move.num_moves):
-            item = stacks[move.from_stack - 1].remove_item()
-            stacks[move.to_stack - 1].add_item(item)
+    stacks = remove_items_by_chunks(stacks, moves)
 
     for stack in stacks:
         top_item = str(stack.get_top_item()).strip("[]")
