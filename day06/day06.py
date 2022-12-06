@@ -27,8 +27,9 @@ def main():
     data = read_file()
     for row in data:
         idx = get_first_unique_string_index(row, 4)
+        print("Start of packet marker... ", end='')
         if idx >= 0:
-            print(f"First marker at pos {idx}")
+            print(f"pos {idx}")
         else:
             print("No marker!")
 
