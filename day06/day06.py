@@ -33,6 +33,13 @@ def main():
         else:
             print("No marker!")
 
+        idx = get_first_unique_string_index(row, 14)
+        print("Start of message marker... ", end='')
+        if idx >= 0:
+            print(f"pos {idx}")
+        else:
+            print("No marker!")
+
 
 if __name__ == "__main__":
     main()
