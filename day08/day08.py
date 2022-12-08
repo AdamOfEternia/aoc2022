@@ -1,8 +1,47 @@
 import numpy as np
 
 
+def get_highest_scenic_score(trees):
+    return np.max(trees)
+
+
 def get_num_trees_visible(trees):
     return np.count_nonzero(trees)
+
+
+def calc_tree_scenic_score(trees, tree_col, tree_row):
+    score = [0] * 4
+
+    tree_height_to_check = trees[tree_row][tree_col]
+
+    # up
+    for t in reversed(trees[:, tree_col][:tree_row]):
+        score[0] += 1
+        if t >= tree_height_to_check:
+            break
+
+    # left
+    for t in reversed(trees[tree_row][:tree_col]):
+        score[1] += 1
+        if t >= tree_height_to_check:
+            break
+
+    # right
+    for t in trees[tree_row][tree_col+1:]:
+        score[2] += 1
+        if t >= tree_height_to_check:
+            break
+
+    # down
+    for t in trees[:, tree_col][tree_row+1:]:
+        score[3] += 1
+        if t >= tree_height_to_check:
+            break
+
+    scenic_score = 1
+    for s in score:
+        scenic_score *= s
+    return scenic_score
 
 
 def is_tree_visible(trees, tree_col, tree_row):
@@ -63,9 +102,15 @@ def main():
     for x in range(1, cols - 1):
         for y in range(1, rows - 1):
             visibility[y][x] = int(is_tree_visible(trees, x, y))
-
     num_trees_visible = get_num_trees_visible(visibility)
     print(num_trees_visible)
+
+    scenic_scores = np.zeros((rows, cols), dtype=int)
+    for x in range(0, cols):
+        for y in range(0, rows):
+            scenic_scores[y][x] = int(calc_tree_scenic_score(trees, x, y))
+    max_scenic_score = get_highest_scenic_score(scenic_scores)
+    print(max_scenic_score)
 
 
 if __name__ == "__main__":
