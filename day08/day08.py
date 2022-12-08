@@ -7,32 +7,30 @@ def get_num_trees_visible(trees):
 
 def is_tree_visible(trees, tree_col, tree_row):
     visible = [1] * 4
-    row_to_check = trees[tree_row]
-    col_to_check = []
-    for row in trees:
-        col_to_check.append(row[tree_col])
 
-    for x in range(0, tree_col):
-        t = row_to_check[x]
-        if t >= trees[tree_row][tree_col]:
+    tree_height_to_check = trees[tree_row][tree_col]
+
+    # left
+    for t in trees[tree_row][:tree_col]:
+        if t >= tree_height_to_check:
             visible[0] = 0
             break
 
-    for x in range(tree_col + 1, len(row_to_check)):
-        t = row_to_check[x]
-        if t >= trees[tree_row][tree_col]:
+    # right
+    for t in trees[tree_row][tree_col+1:]:
+        if t >= tree_height_to_check:
             visible[1] = 0
             break
 
-    for y in range(0, tree_row):
-        t = col_to_check[y]
-        if t >= trees[tree_row][tree_col]:
+    # up
+    for t in trees[:, tree_col][:tree_row]:
+        if t >= tree_height_to_check:
             visible[2] = 0
             break
 
-    for y in range(tree_col + 1, len(row_to_check)):
-        t = col_to_check[y]
-        if t >= trees[tree_row][tree_col]:
+    # down
+    for t in trees[:, tree_col][tree_row+1:]:
+        if t >= tree_height_to_check:
             visible[3] = 0
             break
 
@@ -46,14 +44,26 @@ def read_file():
 
 
 def main():
-    trees = read_file()
-    print(trees)
+    data = read_file()
 
-    visibility = np.ones((len(trees[0]), len(trees)), dtype=int)
-    for y in range(1, len(trees) - 1):
-        for x in range(1, len(trees[y]) - 1):
-            visibility[x, y] = int(is_tree_visible(trees, x, y))
-    print(visibility)
+    # get cols and rows
+    cols = len(data[0])
+    rows = len(data)
+
+    # convert data into tree array
+    trees = np.zeros((rows, cols), dtype=int)
+    for x in range(0, cols):
+        for y in range(0, rows):
+            trees[y][x] = data[y][x]
+
+    # create array of 0 and 1 representing blocked or visible
+    # initialise all to 1 (visible)
+    # check all trees within edge border only (border trees always visible)
+    visibility = np.ones((rows, cols), dtype=int)
+    for x in range(1, cols - 1):
+        for y in range(1, rows - 1):
+            visibility[y][x] = int(is_tree_visible(trees, x, y))
+
     num_trees_visible = get_num_trees_visible(visibility)
     print(num_trees_visible)
 
