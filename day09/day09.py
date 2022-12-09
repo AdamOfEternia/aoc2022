@@ -47,8 +47,7 @@ def main():
         hy = knots[0][-1].y
         steps = move.steps
         for step in range(0, steps):
-            px = knots[0][-1].x
-            py = knots[0][-1].y
+            # move head
             match move.dir:
                 case "U":
                     hy -= 1
@@ -59,10 +58,28 @@ def main():
                 case "R":
                     hx += 1
             knots[0].append(Position(hx, hy))
-            tx = knots[1][-1].x
-            ty = knots[1][-1].y
-            if abs(hx - tx) == 2 or abs(hy - ty) == 2:
-                knots[1].append(Position(px, py))
+
+            kx = knots[1][-1].x
+            ky = knots[1][-1].y
+
+            if abs(hx - kx) == 2 and hy - ky == 0:
+                match move.dir:
+                    case "L":
+                        kx -= 1
+                    case "R":
+                        kx += 1
+                knots[1].append(Position(kx, ky))
+            elif abs(hy - ky) == 2 and hx - kx == 0:
+                match move.dir:
+                    case "U":
+                        ky -= 1
+                    case "D":
+                        ky += 1
+                knots[1].append(Position(kx, ky))
+            elif abs(hx - kx) == 2 or abs(hy - ky) == 2:
+                kx = knots[0][-2].x
+                ky = knots[0][-2].y
+                knots[1].append(Position(kx, ky))
 
     print(f"Head positions={len(knots[0])}")
 
