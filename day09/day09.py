@@ -37,16 +37,18 @@ def main():
     data = read_file()
     moves = get_moves(data)
 
-    head_positions = [Position(0, 0)]
-    tail_positions = [Position(0, 0)]
+    num_knots = 2
+    knots = []
+    for i in range(0, num_knots):
+        knots.append([Position(0, 0)])
 
     for move in moves:
-        hx = head_positions[-1].x
-        hy = head_positions[-1].y
+        hx = knots[0][-1].x
+        hy = knots[0][-1].y
         steps = move.steps
         for step in range(0, steps):
-            px = head_positions[-1].x
-            py = head_positions[-1].y
+            px = knots[0][-1].x
+            py = knots[0][-1].y
             match move.dir:
                 case "U":
                     hy -= 1
@@ -56,15 +58,15 @@ def main():
                     hx -= 1
                 case "R":
                     hx += 1
-            head_positions.append(Position(hx, hy))
-            tx = tail_positions[-1].x
-            ty = tail_positions[-1].y
+            knots[0].append(Position(hx, hy))
+            tx = knots[1][-1].x
+            ty = knots[1][-1].y
             if abs(hx - tx) == 2 or abs(hy - ty) == 2:
-                tail_positions.append(Position(px, py))
+                knots[1].append(Position(px, py))
 
-    print(f"Head positions={len(head_positions)}")
+    print(f"Head positions={len(knots[0])}")
 
-    unique_tail_positions = set(tail_positions)
+    unique_tail_positions = set(knots[-1])
     print(f"Unique tail positions={len(unique_tail_positions)}")
 
 
