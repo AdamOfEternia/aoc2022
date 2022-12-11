@@ -24,7 +24,7 @@ class Rucksack:
         return None
 
 
-@dataclass()
+@dataclass
 class Group:
     rucksacks: list
 
@@ -51,38 +51,51 @@ def get_priority_value(ch: str):
         return ord(ch) - 38
 
 
-def read_file():
-    with open("packed.dat") as file:
-        bags = [line.rstrip() for line in file]
-    return bags
-
-
-def main():
-    bags = read_file()
-    rucksacks = []
-    for bag in bags:
-        rucksacks.append(Rucksack(bag))
-
-    groups = []
-    for i in range(0, len(rucksacks), 3):
-        groups.append(Group(rucksacks[i:i+3]))
-    print(groups)
-
-    total_priority = 0
-    for rucksack in rucksacks:
-        duplicate_item = rucksack.get_duplicate_item_in_compartments()
-        item_priority = get_priority_value(duplicate_item)
-        total_priority += item_priority
-        print(f"Duplicate packed item is {duplicate_item}, priority {item_priority}")
-    print(f"Total priority value {total_priority}")
-
+def get_total_badge_priority(groups):
     total_badge_priority = 0
     for group in groups:
         badge = group.get_group_badge()
         badge_priority = get_priority_value(badge)
         total_badge_priority += badge_priority
-        print(f"Badge is {badge}, priority {badge_priority}")
-    print(f"Total badge priority value {total_badge_priority}")
+    return total_badge_priority
+
+
+def get_total_duplicate_item_in_rucksacks_priority(rucksacks):
+    total_priority = 0
+    for rucksack in rucksacks:
+        duplicate_item = rucksack.get_duplicate_item_in_compartments()
+        item_priority = get_priority_value(duplicate_item)
+        total_priority += item_priority
+    return total_priority
+
+
+def get_groups(rucksacks):
+    groups = []
+    for i in range(0, len(rucksacks), 3):
+        groups.append(Group(rucksacks[i:i+3]))
+    return groups
+
+
+def get_rucksacks(data):
+    return [Rucksack(x) for x in data]
+
+
+def read_file(file_name):
+    with open(file_name) as file:
+        data = [line.rstrip() for line in file]
+    return data
+
+
+def main():
+    data = read_file("day03_data.dat")
+    rucksacks = get_rucksacks(data)
+    groups = get_groups(rucksacks)
+
+    total_priority = get_total_duplicate_item_in_rucksacks_priority(rucksacks)
+    print(f"Total duplicate item in rucksacks priority={total_priority}")
+
+    total_badge_priority = get_total_badge_priority(groups)
+    print(f"Total badge priority={total_badge_priority}")
 
 
 if __name__ == "__main__":
