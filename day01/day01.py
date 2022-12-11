@@ -43,7 +43,7 @@ def read_file(file_name):
 
 
 def main():
-    data = read_file("input.dat")
+    data = read_file("day01_data.dat")
     elves = parse_data(data)
 
     top_elf = get_elf_with_most_calories(elves)
