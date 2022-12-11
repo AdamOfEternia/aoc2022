@@ -1,5 +1,14 @@
 import math
+import operator
 from dataclasses import dataclass, field
+
+
+ops = {
+    "+": operator.add,
+    "-": operator.sub,
+    "*": operator.mul,
+    "/": operator.truediv,
+}
 
 
 @dataclass
@@ -56,21 +65,32 @@ def get_worry_level(item, operation):
     v = worry_level
     if operation[1] != "old":
         v = int(operation[1])
-    worry_level = eval(f"{worry_level} {operation[0]} {v}")
+    worry_level = ops[operation[0]](worry_level, v)
     return math.floor(worry_level / 3)
+
+
+def get_worry_level_mod_factor(item, operation, worry_factor):
+    worry_level = item
+    v = worry_level
+    if operation[1] != "old":
+        v = int(operation[1])
+    worry_level = ops[operation[0]](worry_level, v)
+    return math.floor(worry_level % worry_factor)
 
 
 def main():
     data = read_file()
     monkeys = parse_data_into_monkeys(data)
 
-    num_rnds = 20
+    div_values = [x.div_test for x in monkeys]
+    worry_factor = math.lcm(*div_values)
+    num_rnds = 10000
     for rnd in range(0, num_rnds):
         for monkey in monkeys:
             tmp_list = [x for x in monkey.items]
             for item in tmp_list:
                 monkey.inspection_count += 1
-                worry_level = get_worry_level(item, monkey.operation)
+                worry_level = get_worry_level_mod_factor(item, monkey.operation, worry_factor)
                 monkey.remove_item_from_start()
                 target_monkey = get_target_monkey(worry_level, monkey)
                 monkeys[target_monkey].add_item(worry_level)
