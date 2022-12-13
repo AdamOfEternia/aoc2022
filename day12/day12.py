@@ -82,15 +82,12 @@ def get_good_path(pos, ordered=False):
     return  good_path
 
 
-def get_astar_path(height_map):
-    # get start and end positions
-    start_pos = get_position(height_map, "S")
-    end_pos = get_position(height_map, "E")
+def reset_marker(height_map, current_marker, correct_marker):
+    for r in range(0, len(height_map)):
+        height_map[r] = height_map[r].replace(current_marker, correct_marker)
 
-    # set height map values for actual start and end positions
-    height_map[start_pos.y] = height_map[start_pos.y].replace("S", "a")
-    height_map[end_pos.y] = height_map[end_pos.y].replace("E", "z")
 
+def get_astar_path(height_map, start_pos, end_pos):
     # traverse the route
     open_list = [start_pos]
     closed_list = []
@@ -127,17 +124,47 @@ def get_astar_path(height_map):
     return good_path
 
 
-def get_fewest_steps_to_destination(height_map):
-    path = get_astar_path(height_map)
+def get_fewest_steps_to_destination(height_map, start_pos, end_pos):
+    path = get_astar_path(height_map, start_pos, end_pos)
     return len(path) - 1
+
+
+def get_all_matching_positions(height_map, marker):
+    matching_positions = []
+    for r in range(0, len(height_map)):
+        for c in range(0, len(height_map[r])):
+            if height_map[r][c] == marker:
+                matching_positions.append(Position(c, r))
+    return matching_positions
+
+
+def get_shortest_journey_to_destination(height_map, starting_marker, end_pos):
+    starting_positions = get_all_matching_positions(height_map, starting_marker)
+    shortest_lowest_journey_steps = 9999999999
+    for pos in starting_positions:
+        journey_steps = get_fewest_steps_to_destination(height_map, pos, end_pos)
+        if 0 < journey_steps < shortest_lowest_journey_steps:
+            shortest_lowest_journey_steps = journey_steps
+    return shortest_lowest_journey_steps
 
 
 def main():
     data = read_file("day12_data.dat")
     height_map = get_height_map(data)
 
-    fewest_steps = get_fewest_steps_to_destination(height_map)
+    end_pos = get_position(height_map, "E")
+    reset_marker(height_map, "E", "z")
+
+    # Part 1
+    start_pos = get_position(height_map, "S")
+    reset_marker(height_map, "S", "a")
+    fewest_steps = get_fewest_steps_to_destination(height_map, start_pos, end_pos)
     print(f"Fewest steps to destination={fewest_steps}")
+
+    # Part 2
+    starting_marker = "a"
+    shortest_lowest_journey_steps = get_shortest_journey_to_destination(height_map, starting_marker, end_pos)
+    print(f"Shortest journey from {starting_marker} to destination={shortest_lowest_journey_steps}")
 
 
 if __name__ == "__main__":
