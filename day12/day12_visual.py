@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+import turtle as t
 
 
 @dataclass
@@ -95,11 +96,16 @@ def get_astar_path(height_map):
     open_list = [start_pos]
     closed_list = []
 
+    t.color(200, 25, 25)
+
     path_found = False
     while len(open_list) > 0:
         current_pos = sorted(open_list, key=lambda n: n.f)[0]
         open_list.remove(current_pos)
         closed_list.append(current_pos)
+
+        t.setposition((current_pos.x * 15) - (1200 / 2), (current_pos.y * 15) - (1200 / 2))
+        t.write(height_map[current_pos.y][current_pos.x])
 
         if current_pos == end_pos:
             path_found = True
@@ -136,8 +142,21 @@ def main():
     data = read_file("day12_data.dat")
     height_map = get_height_map(data)
 
+    t.screensize(1200, 1200)
+    t.colormode(255)
+    t.penup()
+    t.hideturtle()
+    t.speed(0)
+    t.color(100, 100, 100)
+    for r in range(0, len(height_map)):
+        for c in range(0, len(height_map[r])):
+            t.setposition((c * 15) - (1200 / 2), (r * 15) - (1200 / 2))
+            t.write(height_map[r][c])
+
     fewest_steps = get_fewest_steps_to_destination(height_map)
     print(f"Fewest steps to destination={fewest_steps}")
+
+    t.exitonclick()
 
 
 if __name__ == "__main__":
