@@ -28,7 +28,7 @@ class Sensor:
         return hash(f"{self.x}-{self.y}")
 
 
-def find_empty_positions_on_row(positional_data, row):
+def find_positions_where_beacon_cannot_be(positional_data, row):
     empty_pos = set()
     for s in positional_data:
         y_dist = abs(s.y - row)
@@ -68,8 +68,8 @@ def main():
     # Part 1
     which_row = 2_000_000
     num_beacons_on_row = len([a for a in (set([b.closest_beacon for b in positional_data])) if a.y == which_row])
-    num_empty_positions_on_row = len(find_empty_positions_on_row(positional_data, which_row)) - num_beacons_on_row
-    print(f"How many positions on row {which_row} cannot contain a beacon?  {num_empty_positions_on_row}")
+    num_positions_beacon_cannot_be = len(find_positions_where_beacon_cannot_be(positional_data, which_row)) - num_beacons_on_row
+    print(f"How many positions on row {which_row} cannot contain a beacon?  {num_positions_beacon_cannot_be}")
 
 
 if __name__ == "__main__":
