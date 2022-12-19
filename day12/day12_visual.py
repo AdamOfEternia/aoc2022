@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 import turtle as t
 
+from utils.utils import read_file
+
 
 @dataclass
 class Position:
@@ -23,12 +25,6 @@ def get_height_map(data):
     height_map.insert(0, "~" * len(height_map[0]))
     height_map.append("~" * len(height_map[0]))
     return height_map
-
-
-def read_file(file_name):
-    with open(file_name) as file:
-        data = [line.rstrip() for line in file]
-    return data
 
 
 def get_position(height_map, marker):

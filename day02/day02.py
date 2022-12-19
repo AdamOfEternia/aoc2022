@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from utils.utils import read_file
+
 
 @dataclass
 class Move:
@@ -69,12 +71,6 @@ def get_my_total_score(games):
             my_game_score += 6
         my_total_score += my_game_score
     return my_total_score
-
-
-def read_file(file_name):
-    with open(file_name) as file:
-        data = [line.rstrip() for line in file]
-    return data
 
 
 def main():

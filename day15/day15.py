@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
 
+from utils.utils import read_file
+
 
 @dataclass
 class Beacon:
@@ -54,12 +56,6 @@ def parse_data(data):
         s = Sensor(sx, sy, b)
         parsed_data.append(s)
     return parsed_data
-
-
-def read_file(file_name):
-    with open(file_name) as file:
-        data = [line.rstrip() for line in file]
-    return data
 
 
 def main():

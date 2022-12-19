@@ -1,3 +1,6 @@
+from utils.utils import read_file
+
+
 def string_has_duplicate_chars(string_to_test):
     for ch in string_to_test:
         if string_to_test.count(ch) > 1:
@@ -17,14 +20,8 @@ def get_first_unique_string_index(string_to_search, search_len):
     return -1
 
 
-def read_file():
-    with (open("data.dat")) as file:
-        data = [line.rstrip() for line in file]
-    return data
-
-
 def main():
-    data = read_file()
+    data = read_file("data.dat")
     for row in data:
         idx = get_first_unique_string_index(row, 4)
         print("Start of packet marker... ", end='')

@@ -1,3 +1,6 @@
+from utils.utils import read_file
+
+
 class Dir:
     def __init__(self, name, parent_index=-1):
         self.name = name
@@ -18,12 +21,6 @@ class Dir:
         return f"{self.name} size={self.size} (parent={self.parent_index})"
 
 
-def read_terminal_output():
-    with (open("term_out.dat")) as file:
-        cmds = [line.rstrip() for line in file]
-    return cmds
-
-
 def get_family_size(dirs, parent_dir):
     total_size = parent_dir.size
     for c_idx in parent_dir.child_indexes:
@@ -33,7 +30,7 @@ def get_family_size(dirs, parent_dir):
 
 
 def main():
-    output = read_terminal_output()
+    output = read_file("term_out.dat")
 
     dirs = [Dir(name="root")]
     curr_dir_idx = 0

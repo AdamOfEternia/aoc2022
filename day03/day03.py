@@ -1,6 +1,8 @@
 import string
 from dataclasses import dataclass
 
+from utils.utils import read_file
+
 lowers = list(string.ascii_lowercase)
 uppers = list(string.ascii_uppercase)
 
@@ -78,12 +80,6 @@ def get_groups(rucksacks):
 
 def get_rucksacks(data):
     return [Rucksack(x) for x in data]
-
-
-def read_file(file_name):
-    with open(file_name) as file:
-        data = [line.rstrip() for line in file]
-    return data
 
 
 def main():

@@ -1,11 +1,8 @@
-def read_file():
-    with (open("data.dat")) as file:
-        data = [line.rstrip() for line in file]
-    return data
+from utils.utils import read_file
 
 
 def main():
-    data = read_file()
+    data = read_file("data.dat")
 
     reg_x = 1
     cycle = 1

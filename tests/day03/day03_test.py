@@ -1,4 +1,5 @@
-from day03.day03 import read_file, get_rucksacks, get_total_duplicate_item_in_rucksacks_priority, get_groups, get_total_badge_priority
+from day03.day03 import get_rucksacks, get_total_duplicate_item_in_rucksacks_priority, get_groups, get_total_badge_priority
+from utils.utils import read_file
 
 
 def test_get_rucksacks():

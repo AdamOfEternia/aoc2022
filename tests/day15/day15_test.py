@@ -1,4 +1,5 @@
-from day15.day15 import parse_data, read_file, find_positions_where_beacon_cannot_be
+from day15.day15 import parse_data, find_positions_where_beacon_cannot_be
+from utils.utils import read_file
 
 
 def test_find_positions_where_beacon_cannot_be():

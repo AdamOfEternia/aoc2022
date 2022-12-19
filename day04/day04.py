@@ -1,6 +1,8 @@
 import names
 from dataclasses import dataclass
 
+from utils.utils import read_file
+
 
 @dataclass
 class Elf:
@@ -42,15 +44,9 @@ class Team:
         return False
 
 
-def read_file():
-    with open("pairs.dat") as file:
-        lines = [line.rstrip() for line in file]
-    return lines
-
-
 def main():
     teams = []
-    lines = read_file()
+    lines = read_file("pairs.dat")
     for line in lines:
         first, second = line.split(',', 1)
         start1, end1 = first.split('-', 1)

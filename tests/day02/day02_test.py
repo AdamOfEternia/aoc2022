@@ -1,4 +1,5 @@
-from day02.day02 import read_file, get_my_total_score, get_my_total_score_pt2
+from day02.day02 import get_my_total_score, get_my_total_score_pt2
+from utils.utils import read_file
 
 
 def test_get_total_score():

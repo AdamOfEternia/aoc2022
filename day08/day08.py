@@ -1,5 +1,7 @@
 import numpy as np
 
+from utils.utils import read_file
+
 
 def get_highest_scenic_score(trees):
     return np.max(trees)
@@ -76,14 +78,8 @@ def is_tree_visible(trees, tree_col, tree_row):
     return 1 in visible
 
 
-def read_file():
-    with (open("trees.dat")) as file:
-        data = [line.rstrip() for line in file]
-    return data
-
-
 def main():
-    data = read_file()
+    data = read_file("trees.dat")
 
     # get cols and rows
     cols = len(data[0])

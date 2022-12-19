@@ -2,6 +2,8 @@ from dataclasses import dataclass
 
 import names
 
+from utils.utils import read_file
+
 
 @dataclass
 class Elf:
@@ -33,17 +35,8 @@ def parse_data(data):
     return elves
 
 
-def read_file(file_name):
-    with open(file_name) as file:
-        data = [line.rstrip() for line in file]
-    # add empty line to end of data if none exists
-    if data[-1] != "":
-        data.append("")
-    return data
-
-
 def main():
-    data = read_file("day01_data.dat")
+    data = parse_data(read_file("day01_data.dat", True))
     elves = parse_data(data)
 
     top_elf = get_elf_with_most_calories(elves)

@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from utils.utils import read_file
+
 
 @dataclass()
 class Stack:
@@ -61,14 +63,13 @@ def remove_items_by_chunks(stacks, moves):
 
 
 def main():
-    with (open("crates.dat")) as file:
-        lines = [line.rstrip() for line in file]
+    data = read_file("crates.dat")
 
     crates = []
-    for line in lines:
-        if line == "":
+    for row in data:
+        if row == "":
             break
-        crates.append(line)
+        crates.append(row)
     crates = list(reversed(crates))
     print(crates)
 
@@ -93,9 +94,9 @@ def main():
     print(stacks)
 
     moves = []
-    for line in lines:
-        if line.startswith("move "):
-            parts = line.split(sep=' ')
+    for row in lines:
+        if row.startswith("move "):
+            parts = row.split(sep=' ')
             moves.append(Move(int(parts[1]), int(parts[3]), int(parts[5])))
     print(moves)
 

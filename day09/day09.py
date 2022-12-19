@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from utils.utils import read_file
+
 
 @dataclass
 class Position:
@@ -27,14 +29,8 @@ def get_moves(data):
     return moves
 
 
-def read_file():
-    with (open("data.dat")) as file:
-        data = [line.rstrip() for line in file]
-    return data
-
-
 def main():
-    data = read_file()
+    data = read_file("data.dat")
     moves = get_moves(data)
 
     num_knots = 2

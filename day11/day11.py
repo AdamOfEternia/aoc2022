@@ -2,6 +2,7 @@ import math
 import operator
 from dataclasses import dataclass, field
 
+from utils.utils import read_file
 
 ops = {
     "+": operator.add,
@@ -35,6 +36,7 @@ class Monkey:
 
 
 def parse_data_into_monkeys(data):
+    data = [row.strip() for row in data if row]
     monkeys = []
     for i in range(0, len(data), 6):
         rows = data[i:i+6]
@@ -46,12 +48,6 @@ def parse_data_into_monkeys(data):
         f_action = int(rows[5].split(":")[-1].strip().split(" ")[-1])
         monkeys.append(Monkey(name, items, op, test_div, t_action, f_action))
     return monkeys
-
-
-def read_file():
-    with (open("data.dat")) as file:
-        data = [l for l in (line.strip() for line in file) if l]
-    return data
 
 
 def get_target_monkey(worry_level, monkey):
@@ -78,10 +74,21 @@ def get_worry_level_mod_factor(item, operation, worry_factor):
     return math.floor(worry_level % worry_factor)
 
 
-def main():
-    data = read_file()
-    monkeys = parse_data_into_monkeys(data)
+def get_day_one_result(monkeys):
+    num_rnds = 20
+    for rnd in range(0, num_rnds):
+        for monkey in monkeys:
+            tmp_list = [x for x in monkey.items]
+            for item in tmp_list:
+                monkey.inspection_count += 1
+                worry_level = get_worry_level(item, monkey.operation)
+                monkey.remove_item_from_start()
+                target_monkey = get_target_monkey(worry_level, monkey)
+                monkeys[target_monkey].add_item(worry_level)
+    return sorted([x.inspection_count for x in monkeys], reverse=True)
 
+
+def get_day_two_result(monkeys):
     div_values = [x.div_test for x in monkeys]
     worry_factor = math.lcm(*div_values)
     num_rnds = 10000
@@ -94,8 +101,19 @@ def main():
                 monkey.remove_item_from_start()
                 target_monkey = get_target_monkey(worry_level, monkey)
                 monkeys[target_monkey].add_item(worry_level)
+    return sorted([x.inspection_count for x in monkeys], reverse=True)
 
-    inspections = sorted([x.inspection_count for x in monkeys], reverse=True)
+
+def main():
+    data = read_file("data.dat")
+    monkeys = parse_data_into_monkeys(data)
+    inspections = get_day_one_result(monkeys)
+    product_of_top_two_inspections = math.prod(inspections[:2])
+    print(f"Product of top two inspection counts={product_of_top_two_inspections}")
+
+    data = read_file("data.dat")
+    monkeys = parse_data_into_monkeys(data)
+    inspections = get_day_two_result(monkeys)
     product_of_top_two_inspections = math.prod(inspections[:2])
     print(f"Product of top two inspection counts={product_of_top_two_inspections}")
 
